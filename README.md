@@ -9,7 +9,7 @@ A minimal Spring Boot demo exposing a single `/hello-world` endpoint.
 ## Stack
 
 - **Spring Boot** 4.1.0
-- **Java** 21 (Eclipse Temurin)
+- **Java** 25 (Eclipse Temurin)
 - **Gradle** with the Kotlin DSL (`build.gradle.kts`)
 - **Devbox** to provision the toolchain (JDK, Gradle) and expose convenience scripts
 

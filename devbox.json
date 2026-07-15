@@ -1,8 +1,8 @@
 {
   "$schema": "https://raw.githubusercontent.com/jetify-com/devbox/main/.schema/devbox.schema.json",
   "packages": [
-    "temurin-bin-21@latest",
-    "gradle@latest"
+    "temurin-bin-25@latest",
+    "gradle_9@latest"
   ],
   "shell": {
     "init_hook": [

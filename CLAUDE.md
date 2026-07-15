@@ -28,4 +28,4 @@ Defined in `devbox.json`:
 
 - Package root: `com.actionforward.demo`
 - Gradle build file uses the Kotlin DSL (`build.gradle.kts`), not Groovy
-- Spring Boot 4.1.0 on Java 21 (Eclipse Temurin)
+- Spring Boot 4.1.0 on Java 25 (Eclipse Temurin)
