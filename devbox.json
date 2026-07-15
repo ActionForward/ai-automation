@@ -1,0 +1,18 @@
+{
+  "$schema": "https://raw.githubusercontent.com/jetify-com/devbox/main/.schema/devbox.schema.json",
+  "packages": [
+    "temurin-bin-21@latest",
+    "gradle@latest"
+  ],
+  "shell": {
+    "init_hook": [
+      "echo 'Devbox ready: '$(java -version 2>&1 | head -n 1)' / '$(gradle --version | grep Gradle)"
+    ],
+    "scripts": {
+      "build": "gradle build",
+      "test": "gradle test",
+      "run": "gradle bootRun",
+      "clean": "gradle clean"
+    }
+  }
+}
