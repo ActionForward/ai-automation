@@ -51,6 +51,10 @@ Available scripts (defined in `devbox.json`):
 
 These same `devbox run <script>` commands can be used from CI or from Claude Code, so the toolchain doesn't need to be installed separately on the host.
 
+## CI
+
+`.github/workflows/ci.yml` runs `devbox run build` and `devbox run test` on the self-hosted `netcup` runner. Devbox must already be installed on that runner (e.g. via `curl -fsSL https://get.jetify.com/devbox | bash`) — the workflow does not install it per-job.
+
 ## Endpoint
 
 ```

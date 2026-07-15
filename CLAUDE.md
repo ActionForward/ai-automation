@@ -6,6 +6,8 @@ Minimal Spring Boot demo exposing a single `/hello-world` endpoint.
 
 This project uses [Devbox](https://www.jetify.com/devbox) to provision the JDK and Gradle. Do not assume `java` or `gradle` are on the host PATH — always run commands via `devbox run <script>` or from inside `devbox shell`.
 
+CI (`.github/workflows/ci.yml`) assumes `devbox` is already installed on the self-hosted runner's PATH — it is not installed per-job.
+
 ## Common commands
 
 Defined in `devbox.json`:
