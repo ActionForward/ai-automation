@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import java.util.TreeMap;
 
 /**
  * A-Tree: a dynamic, multi-rooted index over arbitrary Boolean expressions, after
@@ -51,6 +52,8 @@ public final class ATree<S> {
     /** Leaf nodes indexed by attribute name, for the predicate matching phase. */
     private final Map<String, Set<Node>> leavesByAttr = new HashMap<>();
     private final Map<S, Node> subscriptions = new LinkedHashMap<>();
+    /** Live node count per level, so {@link #maxLevel} can shrink back down as nodes are released. */
+    private final TreeMap<Integer, Integer> nodesPerLevel = new TreeMap<>();
 
     private long eventStamp;
     private int maxLevel;
@@ -204,7 +207,7 @@ public final class ATree<S> {
             node.level = 1 + maxChildLevel(node);
         }
         node.useCount = 1;
-        maxLevel = Math.max(maxLevel, node.level);
+        trackLevel(node);
         nodes.put(node.id, node);
         if (node.kind != Expr.Kind.PREDICATE) {
             selfAdjust(node);
@@ -300,8 +303,9 @@ public final class ATree<S> {
     private void updateLevel(Node node) {
         int level = 1 + maxChildLevel(node);
         if (level != node.level) {
+            untrackLevel(node);
             node.level = level;
-            maxLevel = Math.max(maxLevel, level);
+            trackLevel(node);
             for (Node parent : node.parents) {
                 updateLevel(parent);
             }
@@ -316,6 +320,20 @@ public final class ATree<S> {
         return max;
     }
 
+    /** Records a node at its current level and grows {@link #maxLevel} if needed. */
+    private void trackLevel(Node node) {
+        nodesPerLevel.merge(node.level, 1, Integer::sum);
+        maxLevel = Math.max(maxLevel, node.level);
+    }
+
+    /** Forgets a node at its current level, shrinking {@link #maxLevel} once its level empties out. */
+    private void untrackLevel(Node node) {
+        nodesPerLevel.merge(node.level, -1, (a, b) -> a + b == 0 ? null : a + b);
+        if (node.level == maxLevel && !nodesPerLevel.containsKey(maxLevel)) {
+            maxLevel = nodesPerLevel.isEmpty() ? 0 : nodesPerLevel.lastKey();
+        }
+    }
+
     /**
      * Drops one reference to the node (paper Alg. 5); once unreferenced, the node is removed
      * from the index and its child references released recursively.
@@ -326,6 +344,7 @@ public final class ATree<S> {
             return;
         }
         nodes.remove(node.id);
+        untrackLevel(node);
         if (node.kind == Expr.Kind.PREDICATE) {
             Set<Node> leaves = leavesByAttr.get(node.predicate.attr());
             leaves.remove(node);
