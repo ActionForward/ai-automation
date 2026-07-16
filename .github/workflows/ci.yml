@@ -12,12 +12,11 @@ jobs:
       checks: write
     steps:
       - uses: actions/checkout@v7
+        with:
+          clean: false
 
-      - name: Build
-        run: devbox run -- gradle assemble testClasses --no-daemon
-
-      - name: Test
-        run: devbox run -- gradle test --no-daemon
+      - name: Build & run tests
+        run: devbox run -- gradle build --no-daemon
 
       - name: Publish test report
         if: always()
