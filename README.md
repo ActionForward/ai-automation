@@ -127,6 +127,7 @@ Available scripts (defined in `devbox.json`):
 |---------|-----------------------------------------------------|
 | `build` | `gradle assemble testClasses` — generates the ANTLR sources, compiles main and test sources and builds the jar, without running tests |
 | `test`  | `gradle test` — runs the tests compiled by `build`   |
+| `jmh`   | `gradle jmh` — runs the JMH performance benchmarks under `src/jmh/` |
 | `clean` | `gradle clean`                                       |
 
 These same `devbox run <script>` commands can be used from CI or from Claude Code, so the
