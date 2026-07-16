@@ -46,7 +46,7 @@ jobs:
 
       - name: Create badge
         if: (!cancelled())
-        uses: emibcn/badge-action@f9150fde070fcca0c4e832437611b44838fcd325 # v2.0.4
+        uses: emibcn/badge-action@v2.0.4
         with:
           label: Tests
           status: '${{ fromJSON( steps.test-results.outputs.json ).formatted.stats.tests }} tests, ${{ fromJSON( steps.test-results.outputs.json ).formatted.stats.runs }} runs: ${{ fromJSON( steps.test-results.outputs.json ).conclusion }}'
